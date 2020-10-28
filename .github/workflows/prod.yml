@@ -1,0 +1,28 @@
+name: 'build'
+
+on:
+  push:
+    branches:
+    - master
+jobs:
+  build:
+    name: 'Build'
+    container: rguichard/xelatex
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Build:checkout"
+        uses: actions/checkout@v2
+      - name: "Build resume FR"
+        run : |
+          ls -l
+          cd fr
+          xelatex cv.tex
+          cd ../en
+          xelatex cv.tex
+      - name: "Release resume"
+        uses: actions/upload-artifact@v2
+        with:
+          name: resume
+          path: |
+            ./fr/cv.pdf
+            ./en/cv.pdf

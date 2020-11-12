@@ -19,10 +19,17 @@ jobs:
           xelatex cv.tex
           cd ../en
           xelatex cv.tex
-      - name: "Release resume"
-        uses: actions/upload-artifact@v2
+      - name: "Upload FR Scaleway Object Storage"
+        uses: "quentinbrosse/scaleway-actions/object-storage@master"
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
         with:
-          name: resume
-          path: |
-            ./fr/cv.pdf
-            ./en/cv.pdf
+          args: "put --acl-public fr/cv.pdf s3://particule-resume/rgu/cv.fr.pdf"
+      - name: "Upload EN Scaleway Object Storage"
+        uses: "quentinbrosse/scaleway-actions/object-storage@master"
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+        with:
+          args: "put --acl-public en/cv.pdf s3://particule-resume/rgu/cv.en.pdf"
